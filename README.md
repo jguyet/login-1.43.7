@@ -30,6 +30,42 @@ Pour plus d'informations vous pouvez visiter l'ancien discord du serveur qui reg
 Cette émulateur est basé sur une base d'un émulateur starloco et diverses sources d'emulateurs afin d'en extraire le meilleur.
 [@aegnor] https://discord.com/invite/f2cNEZ2cev
 
+## 🛠️ Installation & Build
+
+### Outils à installer
+
+| Outil | Version | macOS | Linux | Windows |
+|---|---|---|---|---|
+| JDK | 11+ | `brew install openjdk@17` | `apt install openjdk-17-jdk` | https://adoptium.net/ |
+| Kotlin compiler | 1.6+ | `brew install kotlin` | `apt install kotlin` (ou [SDKMAN](https://sdkman.io/)) | `scoop install kotlin` |
+| MariaDB (ou MySQL) | 10+ | `brew install mariadb` + `brew services start mariadb` | `apt install mariadb-server` | https://mariadb.org/download |
+
+Vérifie l'install : `java -version`, `javac -version`, `kotlinc -version`.
+
+### Build + lancement
+
+```bash
+git clone https://github.com/jguyet/login-1.43.7.git
+cd login-1.43.7
+
+# 1. Copier la config exemple et l'éditer
+cp config.example config.properties
+nano config.properties   # adapte host/port DB, login.ip, exchange.ip, etc.
+
+# 2. Compiler
+./build.sh               # macOS/Linux
+# OU
+build.bat                # Windows
+
+# 3. Démarrer
+./start.sh               # macOS/Linux
+# OU
+start.bat                # Windows
+```
+
+Le login serveur écoute par défaut sur le port `1135` (configurable via `system.server.login.port`).
+Pense à créer la DB `aegnor_login` et importer le schéma SQL avant le premier démarrage.
+
 ## DEBUG :
 
 La liste des debugs est visible sur le discord dans l'onglet patchnote
