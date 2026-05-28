@@ -2,6 +2,7 @@ package org.starloco.locos.exchange.packet;
 
 import org.starloco.locos.exchange.ExchangeClient;
 import org.starloco.locos.kernel.Main;
+import org.starloco.locos.login.LoginClient;
 import org.starloco.locos.object.Server;
 
 import java.util.ArrayList;
@@ -53,6 +54,24 @@ public class PacketHandler {
                             if (client.getServer() != null)
                                 client.getServer().setState(Integer.parseInt(packet.substring(2)));
                             break;
+                    }
+                    break;
+
+                case 'W' : // Worker / game-side notification
+                    if (packet.length() > 1 && packet.charAt(1) == 'S') {
+                        // "WS<accountId>;<ticket>#" : le game enregistre un switch ticket
+                        // pour permettre au client de revenir directement en sélection de perso.
+                        String body = packet.substring(2);
+                        int sharp = body.indexOf('#');
+                        if (sharp >= 0) body = body.substring(0, sharp);
+                        String[] parts = body.split(";", 2);
+                        if (parts.length == 2) {
+                            try {
+                                int accId = Integer.parseInt(parts[0]);
+                                LoginClient.SWITCH_TICKETS.put(parts[1], accId);
+                            } catch (NumberFormatException ignored) {
+                            }
+                        }
                     }
                     break;
 

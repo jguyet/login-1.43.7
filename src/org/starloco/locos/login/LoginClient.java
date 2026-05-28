@@ -5,7 +5,17 @@ import org.starloco.locos.login.packet.PacketHandler;
 import org.starloco.locos.object.Account;
 import org.apache.mina.core.session.IoSession;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 public class LoginClient {
+
+    /**
+     * Switch tickets stockés par le game via Exchange "WS<accountId>;<ticket>#".
+     * Mapping ticket → accountId. Validés (et retirés) quand le client se reconnecte
+     * avec "#S\n<ticket>" pour passer directement à la sélection de personnage.
+     */
+    public static final Map<String, Integer> SWITCH_TICKETS = new ConcurrentHashMap<>();
 
     private final static String POLICY = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
             "<cross-domain-policy>"+
@@ -85,6 +95,6 @@ public class LoginClient {
     }
     
     public enum Status {
-        WAIT_VERSION, WAIT_PASSWORD, WAIT_ACCOUNT, WAIT_NICKNAME, SERVER
+        WAIT_VERSION, WAIT_PASSWORD, WAIT_ACCOUNT, WAIT_NICKNAME, WAIT_SWITCH_TICKET, SERVER
     }
 }

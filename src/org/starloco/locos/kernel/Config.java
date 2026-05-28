@@ -22,7 +22,7 @@ public class Config {
     public static String databaseName, webUrl;
 
     //network
-    public static String exchangeIp, version;
+    public static String exchangeIp, loginIp, version;
     public static int loginPort, exchangePort;
 
     public static void verify(String name) {
@@ -62,6 +62,7 @@ public class Config {
             String test2 = properties.getProperty(Params.ONLYADMIN.toString()); i = 0;
             Config.encryptpassword = Boolean.parseBoolean(test);
             Config.onlyadmin = Boolean.parseBoolean(test2);
+            Config.loginIp = properties.getProperty(Params.LOGIN_IP.toString()); // optional, default 0.0.0.0
             Config.loginPort = Integer.parseInt(properties.getProperty(Params.PORT.toString())); i++;
             Config.version = properties.getProperty(Params.VERSION.toString()); i = 12;
             Config.host = properties.getProperty(Params.LOGIN_DB_HOST.toString()); i++;
@@ -113,8 +114,9 @@ public class Config {
                 .append(Params.EXCHANGE_PORT + " 666\n")
                 .append("\n")
                 .append("#Login server\n")
+                .append(Params.LOGIN_IP + " 0.0.0.0\n")
                 .append(Params.PORT + " 450\n")
-                .append(Params.VERSION + " 1.29.1\n")
+                .append(Params.VERSION + " 1.43.7\n")
                 .append(Params.ENCRYPTPASSWORD + " true\n")
                 .append("\n")
                 .append(Params.LOGIN_DB_HOST + " 127.0.0.1\n")
@@ -150,6 +152,7 @@ public class Config {
     private enum Params {
         EXCHANGE_PORT("system.server.exchange.port"),
         EXCHANGE_IP("system.server.exchange.ip"),
+        LOGIN_IP("system.server.login.ip"),
         PORT("system.server.login.port"),
         VERSION("system.server.login.version"),
         ONLYADMIN("system.server.onlyadmin"),

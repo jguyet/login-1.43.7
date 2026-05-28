@@ -36,7 +36,14 @@ public class LoginServer {
             return;
 
         try {
-            acceptor.bind(new InetSocketAddress(Config.loginPort));
+            InetSocketAddress bindAddress;
+            if (Config.loginIp != null && !Config.loginIp.isEmpty() && !Config.loginIp.equals("0.0.0.0")) {
+                bindAddress = new InetSocketAddress(Config.loginIp, Config.loginPort);
+            } else {
+                bindAddress = new InetSocketAddress(Config.loginPort);
+            }
+            acceptor.bind(bindAddress);
+            Console.instance.write(" > Login server bound on " + bindAddress);
         } catch (IOException e) {
             Console.instance.write(e.toString());
             Console.instance.write(" > Fail to bind acceptor : " + e);

@@ -14,9 +14,9 @@ import java.util.Map.Entry;
 class ServerSelected {
 
     /**
-     * AXEr : Vous n'�tes pas autoris� � rejoindre le serveur. AXEd : Le serveur
-     * selectionn� n'est pas disponible. AXEf : Serveur : COMPLET. AXEs :
-     * Impossible de s�lectionner ce perso car il est vendeur sur le serveur
+     * AXEr : Vous n'ï¿½tes pas autorisï¿½ ï¿½ rejoindre le serveur. AXEd : Le serveur
+     * selectionnï¿½ n'est pas disponible. AXEf : Serveur : COMPLET. AXEs :
+     * Impossible de sï¿½lectionner ce perso car il est vendeur sur le serveur
      * undefined.
      */
     public static void get(LoginClient client, String packet) {
@@ -68,7 +68,7 @@ class ServerSelected {
             return;
         }
 
-        //server.send("WA" + account.getUUID() + "#"); // By Coding Mestre, �vite "Erreur de protocole"
+        //server.send("WA" + account.getUUID() + "#"); // By Coding Mestre, évite "Erreur de protocole"
         server.send("WA" + account.getUUID() + ";" + client.getClientVersion() + "#");
 
         StringBuilder sb = new StringBuilder();
