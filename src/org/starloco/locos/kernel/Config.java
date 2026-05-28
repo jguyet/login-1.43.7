@@ -14,7 +14,7 @@ public class Config {
     public static boolean isRunning;
     public static LoginServer loginServer;
     public static ExchangeServer exchangeServer;
-    public static boolean encryptpassword, onlyadmin;
+    public static boolean onlyadmin;
 
     //database
     public static String host, user, pass;
@@ -58,9 +58,7 @@ public class Config {
         try {
             Config.exchangeIp = properties.getProperty(Params.EXCHANGE_IP.toString()); i = 6;
             Config.exchangePort = Integer.parseInt(properties.getProperty(Params.EXCHANGE_PORT.toString()));i = 9;
-            String test = properties.getProperty(Params.ENCRYPTPASSWORD.toString()); i = 0;
             String test2 = properties.getProperty(Params.ONLYADMIN.toString()); i = 0;
-            Config.encryptpassword = Boolean.parseBoolean(test);
             Config.onlyadmin = Boolean.parseBoolean(test2);
             Config.loginIp = properties.getProperty(Params.LOGIN_IP.toString()); // optional, default 0.0.0.0
             Config.loginPort = Integer.parseInt(properties.getProperty(Params.PORT.toString())); i++;
@@ -117,7 +115,6 @@ public class Config {
                 .append(Params.LOGIN_IP + " 0.0.0.0\n")
                 .append(Params.PORT + " 450\n")
                 .append(Params.VERSION + " 1.43.7\n")
-                .append(Params.ENCRYPTPASSWORD + " true\n")
                 .append("\n")
                 .append(Params.LOGIN_DB_HOST + " 127.0.0.1\n")
                 .append(Params.LOGIN_DB_PORT + " 3306\n")
@@ -156,7 +153,6 @@ public class Config {
         PORT("system.server.login.port"),
         VERSION("system.server.login.version"),
         ONLYADMIN("system.server.onlyadmin"),
-        ENCRYPTPASSWORD("system.server.encrypt.password"),
         LOGIN_DB_HOST("database.login.host"),
         LOGIN_DB_PORT("database.login.port"),
         LOGIN_DB_USER("database.login.user"),

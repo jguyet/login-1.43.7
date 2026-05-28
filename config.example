@@ -11,7 +11,6 @@ system.server.exchange.port 6667
 system.server.login.ip 0.0.0.0
 system.server.login.port 1135
 system.server.login.version 1.43.7
-system.server.encrypt.password true
 system.server.onlyadmin false
 
 #Database (MariaDB / MySQL)

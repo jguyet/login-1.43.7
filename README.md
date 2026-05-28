@@ -66,6 +66,20 @@ start.bat                # Windows
 Le login serveur écoute par défaut sur le port `1135` (configurable via `system.server.login.port`).
 Pense à créer la DB `aegnor_login` et importer le schéma SQL avant le premier démarrage.
 
+### 🔓 Mots de passe en clair (projet pédagogique)
+
+Depuis la version 1.43.7, **l'encryption MD5+SHA512 a été retirée** : les mots de passe sont stockés **en clair** dans la colonne `accounts.pass` de la DB pour faciliter la création de comptes manuelle.
+
+Après import du schéma SQL initial, lance la migration pour remettre `admin1` à `admin` en clair :
+
+```bash
+mysql -h 127.0.0.1 -u root -p aegnor_login < sql/migration_clear_passwords.sql
+```
+
+Pour ajouter de nouveaux comptes : simple `INSERT INTO accounts (account, pass, ...) VALUES ('mon_login', 'mon_mdp', ...)` — voir l'exemple commenté dans `sql/migration_clear_passwords.sql`.
+
+⚠️ Cette config est volontairement insécurisée — adaptée à un setup de **dev local** et d'apprentissage, **PAS pour la production publique**.
+
 ## DEBUG :
 
 La liste des debugs est visible sur le discord dans l'onglet patchnote

@@ -1,20 +1,15 @@
 package org.starloco.locos.login.packet;
 
-import org.starloco.locos.kernel.Config;
 import org.starloco.locos.login.LoginClient;
 import org.starloco.locos.login.LoginClient.Status;
-
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 class Password {
 
     public static void verify(LoginClient client, String pass) {
         String password = decryptPassword(pass, client.getKey());
 
-        if (!isValidPass(password, client.getAccount().getPass())) {
+        // Comparaison directe en clair (pas de hash) — projet pédagogique.
+        if (!password.equals(client.getAccount().getPass())) {
             client.send("AlEf");
             client.kick();
             return;
@@ -23,6 +18,11 @@ class Password {
         client.setStatus(Status.SERVER);
     }
 
+    /**
+     * Déchiffre le mot de passe envoyé par le client Dofus (algo client retro,
+     * indépendant du hash DB). Le résultat est le mot de passe en clair tapé par
+     * l'utilisateur, qui est ensuite comparé directement à la colonne `pass` de la DB.
+     */
     private static String decryptPassword(String pass, String key) {
         if (pass.startsWith("#1"))
             pass = pass.substring(2);
@@ -31,7 +31,7 @@ class Password {
         char PPass, PKey;
         int APass, AKey, ANB, ANB2, somme1, somme2;
 
-        String decrypted = "";
+        StringBuilder decrypted = new StringBuilder();
 
         for (int i = 0; i < pass.length(); i += 2) {
             PKey = key.charAt(i / 2);
@@ -52,39 +52,9 @@ class Password {
 
             PPass = (char) (APass + AKey);
 
-            decrypted += PPass;
+            decrypted.append(PPass);
         }
 
-        return decrypted;
-    }
-
-    private static String cryptPassword(String message, String type) {
-        MessageDigest md;
-        try {
-            md = MessageDigest.getInstance(type);
-            md.update(message.getBytes());
-            byte[] mb = md.digest();
-            String out = "";
-            for (byte temp : mb) {
-                String s = Integer.toHexString(temp);
-                while (s.length() < 2) {
-                    s = "0" + s;
-                }
-                s = s.substring(s.length() - 2);
-                out += s;
-            }
-            return out;
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    private static boolean isValidPass(String pass, String passHash) {
-        String password = pass;
-        if(Config.encryptpassword) {
-            password = cryptPassword(cryptPassword(pass, "MD5"), "SHA-512");
-        }
-        return password != null && password.equals(passHash);
+        return decrypted.toString();
     }
 }
