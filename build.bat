@@ -16,13 +16,20 @@ for %%d in (lib libs) do (
   )
 )
 
-dir /s /b src\*.java > "%TEMP%\login_java.txt"
-dir /s /b src\*.kt   > "%TEMP%\login_kt.txt" 2>nul
+rem Liste des .java avec des slash avant (/) : un argfile kotlinc/javac traite
+rem l'antislash comme un echappement, ce qui casse les chemins absolus Windows.
+if exist "%TEMP%\login_java.txt" del "%TEMP%\login_java.txt"
+for /f "delims=" %%f in ('dir /s /b src\*.java') do (
+  set "p=%%f"
+  set "p=!p:\=/!"
+  echo !p!>> "%TEMP%\login_java.txt"
+)
 
-for %%i in ("%TEMP%\login_kt.txt") do if not %%~zi==0 (
-  set KT_FILES=
-  for /f "delims=" %%k in (%TEMP%\login_kt.txt) do set KT_FILES=!KT_FILES! "%%k"
-  kotlinc -cp "!CP!" -d build\classes "@%TEMP%\login_java.txt" !KT_FILES!
+set KT_FILES=
+for /f "delims=" %%k in ('dir /s /b src\*.kt 2^>nul') do set KT_FILES=!KT_FILES! "%%k"
+
+if defined KT_FILES (
+  kotlinc -cp "!CP!" -d build\classes "@%TEMP%\login_java.txt"!KT_FILES!
   if errorlevel 1 exit /b 1
 )
 
