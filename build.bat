@@ -4,9 +4,8 @@ cd /d "%~dp0"
 
 where java >nul 2>&1    || (echo ERROR: 'java' introuvable dans le PATH ^(JDK 11+ requis^) & exit /b 1)
 where javac >nul 2>&1   || (echo ERROR: 'javac' introuvable dans le PATH ^(JDK 11+ requis^) & exit /b 1)
-where kotlinc >nul 2>&1 || (echo ERROR: 'kotlinc' introuvable ^(scoop install kotlin^) & exit /b 1)
 
-echo === Compilation aegnor_loginV2 ===
+echo === Compilation aegnor_loginV2 ^(full Java^) ===
 if not exist build\classes mkdir build\classes
 
 set CP=
@@ -16,8 +15,8 @@ for %%d in (lib libs) do (
   )
 )
 
-rem Liste des .java avec des slash avant (/) : un argfile kotlinc/javac traite
-rem l'antislash comme un echappement, ce qui casse les chemins absolus Windows.
+rem Liste des .java avec des slash avant (/) : un argfile javac traite l'antislash
+rem comme un echappement, ce qui casse les chemins absolus Windows.
 if exist "%TEMP%\login_java.txt" del "%TEMP%\login_java.txt"
 for /f "delims=" %%f in ('dir /s /b src\*.java') do (
   set "p=%%f"
@@ -25,15 +24,7 @@ for /f "delims=" %%f in ('dir /s /b src\*.java') do (
   echo !p!>> "%TEMP%\login_java.txt"
 )
 
-set KT_FILES=
-for /f "delims=" %%k in ('dir /s /b src\*.kt 2^>nul') do set KT_FILES=!KT_FILES! "%%k"
-
-if defined KT_FILES (
-  kotlinc -cp "!CP!" -d build\classes "@%TEMP%\login_java.txt"!KT_FILES!
-  if errorlevel 1 exit /b 1
-)
-
-javac -encoding UTF-8 -cp "!CP!build\classes" -d build\classes "@%TEMP%\login_java.txt"
+javac -encoding UTF-8 -cp "!CP!" -d build\classes "@%TEMP%\login_java.txt"
 if errorlevel 1 exit /b 1
 
 echo === Build OK ===

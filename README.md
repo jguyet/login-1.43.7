@@ -37,10 +37,11 @@ Cette émulateur est basé sur une base d'un émulateur starloco et diverses sou
 | Outil | Version | macOS | Linux | Windows |
 |---|---|---|---|---|
 | JDK | 11+ | `brew install openjdk@17` | `apt install openjdk-17-jdk` | https://adoptium.net/ |
-| Kotlin compiler | 1.6+ | `brew install kotlin` | `apt install kotlin` (ou [SDKMAN](https://sdkman.io/)) | `scoop install kotlin` |
 | MariaDB (ou MySQL) | 10+ | `brew install mariadb` + `brew services start mariadb` | `apt install mariadb-server` | https://mariadb.org/download |
 
-Vérifie l'install : `java -version`, `javac -version`, `kotlinc -version`.
+Vérifie l'install : `java -version`, `javac -version`.
+
+> Le login est 100 % Java : **aucun compilateur Kotlin n'est requis**.
 
 ### Build + lancement
 
